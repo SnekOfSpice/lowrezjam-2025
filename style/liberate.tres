@@ -1,0 +1,24 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://yfwwtihxqnf6"]
+
+[ext_resource type="FontVariation" uid="uid://b28gwbw2m7dtd" path="res://style/fonts/label_font.tres" id="1_hjsdv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hjsdv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1u5n6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1u5n6"]
+bg_color = Color(0.113725, 0.113725, 0.113725, 0.415686)
+border_width_bottom = 2
+border_color = Color(0.79105, 0.385609, 0.757333, 1)
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[resource]
+Button/styles/normal = SubResource("StyleBoxEmpty_hjsdv")
+Button/styles/pressed = SubResource("StyleBoxEmpty_1u5n6")
+Label/constants/line_spacing = -2
+Label/font_sizes/font_size = 16
+Label/fonts/font = ExtResource("1_hjsdv")
+LineEdit/fonts/font = ExtResource("1_hjsdv")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_1u5n6")
+RichTextLabel/fonts/normal_font = ExtResource("1_hjsdv")
