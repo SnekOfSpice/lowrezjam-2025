@@ -1,15 +1,38 @@
-[gd_scene load_steps=7 format=3 uid="uid://dsb7icsbl7uqh"]
+[gd_scene load_steps=12 format=3 uid="uid://dsb7icsbl7uqh"]
 
-[ext_resource type="Texture2D" uid="uid://bcyrr5nu8cnme" path="res://icon.svg" id="1_2qcmc"]
 [ext_resource type="Theme" uid="uid://yfwwtihxqnf6" path="res://style/liberate.tres" id="1_cciet"]
 [ext_resource type="Script" uid="uid://rxnvr74bvrmm" path="res://src/menus/main_view.gd" id="2_eld1n"]
+[ext_resource type="Shader" uid="uid://c52d230dird1q" path="res://shaders/balatro.gdshader" id="3_d6kii"]
+[ext_resource type="PackedScene" uid="uid://dbgcvbo2gm04y" path="res://src/entry_rtl.tscn" id="4_d6kii"]
 [ext_resource type="FontFile" uid="uid://bnbdd4ttjytsw" path="res://style/fonts/Born2bSportyV2.ttf" id="4_dkq5f"]
+[ext_resource type="Shader" uid="uid://cuubcv27fwc4x" path="res://src/menus/blur.gdshader" id="4_m08hk"]
+[ext_resource type="Script" uid="uid://dr0hqxdymvf0d" path="res://src/menus/kb_sensitive_line_edit.gd" id="6_k2gfu"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eld1n"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m08hk"]
+shader = ExtResource("3_d6kii")
+shader_parameter/spin_rotation_speed = 2.0
+shader_parameter/move_speed = 7.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/colour_1 = Color(0, 0, 0, 1)
+shader_parameter/colour_2 = Color(0, 0, 0, 1)
+shader_parameter/colour_3 = Color(0, 0, 0, 1)
+shader_parameter/contrast = 2.115
+shader_parameter/lighting = -4.96
+shader_parameter/spin_amount = 0.25
+shader_parameter/pixel_filter = 740.0
+shader_parameter/is_rotating = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k2gfu"]
+shader = ExtResource("4_m08hk")
+shader_parameter/blur_size = Vector2(0.5, 0.5)
 
 [sub_resource type="FontVariation" id="FontVariation_d6kii"]
 base_font = ExtResource("4_dkq5f")
 spacing_top = -2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d6kii"]
+bg_color = Color(0.079475, 0.0693, 0.11, 1)
+expand_margin_bottom = 1.0
 
 [node name="MainView" type="Control"]
 layout_mode = 3
@@ -21,19 +44,10 @@ grow_vertical = 2
 theme = ExtResource("1_cciet")
 script = ExtResource("2_eld1n")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_2qcmc")
-expand_mode = 1
-
-[node name="ControlsContainer" type="Control" parent="."]
-visible = false
+[node name="Background" type="ColorRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_m08hk")
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,81 +55,73 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ControlsContainer"]
+[node name="Blur" type="ColorRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_k2gfu")
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 0
 
-[node name="PrevButton" type="Button" parent="ControlsContainer/HBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+vertical_scroll_mode = 3
+
+[node name="EntryContainer" type="MarginContainer" parent="ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/EntryContainer"]
+layout_mode = 2
+
+[node name="PromptLabel" type="RichTextLabel" parent="ScrollContainer/EntryContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "2024-07-12
+dfg
+dfg
+dfg
+dfg"
+fit_content = true
+autowrap_mode = 1
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/EntryContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_right = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EntryContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="LineEdit" type="LineEdit" parent="ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("scroll_container")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("6_k2gfu")
+scroll_container = NodePath("../../../../..")
+
+[node name="NextEntryStageButton" type="Button" parent="ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
+size_flags_vertical = 8
 focus_mode = 0
-text = "<"
-
-[node name="NextButton" type="Button" parent="ControlsContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-focus_mode = 0
+theme_type_variation = &"UIButton"
 text = ">"
 
-[node name="TodayButton" type="Button" parent="ControlsContainer"]
+[node name="CurrentDayContainer" type="MarginContainer" parent="."]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -23.0
-offset_right = 9.0
-grow_vertical = 0
-size_flags_horizontal = 8
-size_flags_vertical = 10
-focus_mode = 0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_eld1n")
-text = "x"
-
-[node name="AnniversaryButton" type="Button" parent="ControlsContainer"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -9.0
-offset_top = -23.0
-grow_horizontal = 0
-grow_vertical = 0
-size_flags_horizontal = 8
-size_flags_vertical = 10
-focus_mode = 0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_eld1n")
-text = "y"
-
-[node name="ScrollContainer2" type="ScrollContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer2"]
-layout_mode = 2
-
-[node name="AnniversaryContainer" type="Control" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -125,59 +131,10 @@ grow_vertical = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
-layout_mode = 2
-vertical_scroll_mode = 3
-
-[node name="CurrentDayEntryLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer"]
+[node name="CurrentDayEntryLabel" parent="CurrentDayContainer" instance=ExtResource("4_d6kii")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-fit_content = true
-horizontal_alignment = 1
-
-[node name="EntryContainer" type="MarginContainer" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = 13.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EntryContainer"]
-layout_mode = 2
-
-[node name="PromptLabel" type="Label" parent="EntryContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "2024-07-12"
-horizontal_alignment = 1
-autowrap_mode = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="EntryContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_right = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EntryContainer/VBoxContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 1
-
-[node name="LineEdit" type="LineEdit" parent="EntryContainer/VBoxContainer/MarginContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="NextEntryStageButton" type="Button" parent="EntryContainer/VBoxContainer/MarginContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
-focus_mode = 0
-text = ">"
+fit_content = false
 
 [node name="Praise" type="ColorRect" parent="."]
 unique_name_in_owner = true
@@ -207,6 +164,112 @@ vertical_alignment = 1
 autowrap_mode = 3
 uppercase = true
 
-[connection signal="pressed" from="ControlsContainer/TodayButton" to="." method="_on_today_button_pressed"]
-[connection signal="gui_input" from="MarginContainer/ScrollContainer/CurrentDayEntryLabel" to="." method="_on_current_day_entry_label_gui_input"]
-[connection signal="button_up" from="EntryContainer/VBoxContainer/MarginContainer/HBoxContainer/NextEntryStageButton" to="." method="_on_next_entry_stage_button_button_up"]
+[node name="AnniversaryButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -18.0
+offset_right = 1.0
+offset_bottom = 5.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 10
+focus_mode = 0
+theme_type_variation = &"UIButton"
+text = "a"
+
+[node name="TodayButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = -18.0
+offset_right = 8.0
+offset_bottom = 5.0
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 10
+focus_mode = 0
+theme_type_variation = &"UIButton"
+text = "t"
+
+[node name="AnniversaryContainer" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="AnniversaryContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AnniversaryContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="PanelContainer" parent="AnniversaryContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_d6kii")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AnniversaryContainer/MarginContainer/VBoxContainer/ColorRect"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="AnniversaryLabel" type="Label" parent="AnniversaryContainer/MarginContainer/VBoxContainer/ColorRect/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "= 07-02 ="
+horizontal_alignment = 1
+
+[node name="AnniversaryScrollContainer" type="ScrollContainer" parent="AnniversaryContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 0
+horizontal_scroll_mode = 0
+
+[node name="AnniversaryEntries" type="VBoxContainer" parent="AnniversaryContainer/MarginContainer/VBoxContainer/AnniversaryScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CloseAnniversaryButton" type="Button" parent="AnniversaryContainer"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -5.0
+offset_top = -3.0
+offset_bottom = 8.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+focus_mode = 0
+theme_type_variation = &"UIButton"
+text = "X"
+
+[connection signal="text_submitted" from="ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="button_up" from="ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer/NextEntryStageButton" to="." method="go_to_next_entry_state"]
+[connection signal="gui_input" from="CurrentDayContainer/CurrentDayEntryLabel" to="." method="_on_cover_gui_input"]
+[connection signal="button_up" from="AnniversaryButton" to="." method="_on_anniversary_button_button_up"]
+[connection signal="pressed" from="TodayButton" to="." method="_on_today_button_pressed"]
+[connection signal="gui_input" from="AnniversaryContainer" to="." method="_on_cover_gui_input"]
+[connection signal="gui_input" from="AnniversaryContainer/MarginContainer/VBoxContainer/AnniversaryScrollContainer" to="." method="_on_cover_gui_input"]
+[connection signal="button_up" from="AnniversaryContainer/CloseAnniversaryButton" to="." method="_on_close_anniversary_button_button_up"]

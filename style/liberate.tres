@@ -1,6 +1,7 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://yfwwtihxqnf6"]
+[gd_resource type="Theme" load_steps=14 format=3 uid="uid://yfwwtihxqnf6"]
 
 [ext_resource type="FontVariation" uid="uid://b28gwbw2m7dtd" path="res://style/fonts/label_font.tres" id="1_hjsdv"]
+[ext_resource type="FontFile" uid="uid://bmoxo2xpyxmwl" path="res://style/fonts/lowrezicons.ttf" id="2_1u5n6"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_spcek"]
 
@@ -22,6 +23,27 @@ border_color = Color(0.79105, 0.385609, 0.757333, 1)
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xc0q0"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_hjsdv"]
+color = Color(0.641934, 0.641934, 0.641934, 1)
+vertical = true
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_1u5n6"]
+color = Color(0.839382, 0.495243, 0.664493, 1)
+vertical = true
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_spcek"]
+color = Color(0.305617, 0.684564, 0.899696, 1)
+vertical = true
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_xc0q0"]
+vertical = true
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_mvdax"]
+color = Color(0.295867, 0.295866, 0.295866, 1)
+vertical = true
+
 [resource]
 Button/fonts/font = ExtResource("1_hjsdv")
 Button/styles/hover = SubResource("StyleBoxEmpty_spcek")
@@ -34,3 +56,11 @@ LineEdit/fonts/font = ExtResource("1_hjsdv")
 LineEdit/styles/focus = SubResource("StyleBoxFlat_hjsdv")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_1u5n6")
 RichTextLabel/fonts/normal_font = ExtResource("1_hjsdv")
+UIButton/base_type = &"Button"
+UIButton/fonts/font = ExtResource("2_1u5n6")
+UIButton/styles/normal = SubResource("StyleBoxEmpty_xc0q0")
+VScrollBar/styles/grabber = SubResource("StyleBoxLine_hjsdv")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxLine_1u5n6")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxLine_spcek")
+VScrollBar/styles/scroll = SubResource("StyleBoxLine_xc0q0")
+VScrollBar/styles/scroll_focus = SubResource("StyleBoxLine_mvdax")

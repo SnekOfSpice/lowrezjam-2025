@@ -1,46 +1,32 @@
 extends Node
 
 var entries := {
-	"2024" : {
-		"01" : {
-			"03" : "2024-01-03 its earlier januaray uwuwu",
-			"04" : "2024-01-04 its earlier januaray again uwuwu",
-		}
-	},
-	"2025" : {
-		"01" : {
-			"03" : "2025-01-03 its januaray uwuwu",
-			"04" : "2025-01-04 its januaray again uwuwu",
-		},
-		"08" : {
-			"02" : "2025-08-02 its yesterday",
-			"03" : "2025-08-03 its today",
-			"04" : "2025-08-04 its tpmorrow",
-		}
-	}
+	#"2024" : {
+		#"01" : {
+			#"03" : "2024-01-03 its earlier januaray uwuwu",
+			#"04" : "2024-01-04 its earlier januaray again uwuwu dfgdfg dfg df dfg df df d d df df d dgdfg dfg df dfg df df d d df df d d",
+		#}
+	#},
+	#"2025" : {
+		#"01" : {
+			#"03" : "2025-01-03 its januaray uwugain uwuwu dfgdfg dfg df dfg df df d d df df d dgdfg dfg df dfg df df d d df df dwu",
+			#"04" : "2025-01-04 its januaray again uwgain uwuwu dfgdfg dfg df dfg df df d d df df d dgdfg dfg df dfg df df d d df df duwu",
+		#},
+		#"08" : {
+			#"02" : "2025-08-02 its yesterdaygain uwuwu dfgdfg dfg df dfg df df d d df df d dgdfg dfg df dfg df df d d df df d",
+			#"03" : "2025-08-03 its today",
+			#"04" : "2025-08-04 its tpmorrow",
+		#}
+	#}
 }
 
-const DAY_COUNT_BY_MONTH := {
-	 1: 31,
-	 2: 29,
-	 3: 31,
-	 4: 30,
-	 5: 31,
-	 6: 30,
-	 7: 31,
-	 8: 31,
-	 9: 30,
-	10: 31,
-	11: 30,
-	12: 31,
-}
 
-#func _ready() -> void:
-	#var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
-	#if not file:
-		#return
-	#entries = JSON.parse_string(file.get_as_text())
-	#file.close()
+func _ready() -> void:
+	var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
+	if not file:
+		return
+	entries = JSON.parse_string(file.get_as_text())
+	file.close()
 
 
 func get_all_entry_datetimes() -> Array:
@@ -62,9 +48,9 @@ func sort_datetimes(dt1:String, dt2:String) -> bool:
 	var m1 = parts[1]
 	var d1 = parts[2]
 	var parts2 = dt2.split("-")
-	var y2 = parts[0]
-	var m2 = parts[1]
-	var d2 = parts[2]
+	var y2 = parts2[0]
+	var m2 = parts2[1]
+	var d2 = parts2[2]
 	
 	if y1 < y2: return true
 	if m1 < m2: return true
@@ -76,9 +62,13 @@ func get_entry(origin : String, offset:=0) -> String:
 	origin = origin.split("T")[0]
 	
 	if offset == 0:
+		@warning_ignore("confusable_local_declaration")
 		var parts = origin.split("-")
+		@warning_ignore("confusable_local_declaration")
 		var year = parts[0]
+		@warning_ignore("confusable_local_declaration")
 		var month = parts[1]
+		@warning_ignore("confusable_local_declaration")
 		var day = parts[2]
 		
 		return entries.get(year, {}).get(month, {}).get(day, "")
