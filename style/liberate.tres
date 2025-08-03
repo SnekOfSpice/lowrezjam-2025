@@ -11,15 +11,16 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hjsdv"]
 bg_color = Color(0.4, 0.176, 0.317867, 0.415686)
-border_width_bottom = 2
-border_color = Color(0.89135, 0.625735, 0.861102, 1)
+border_width_top = 10
+border_color = Color(1, 1, 1, 0)
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1u5n6"]
 bg_color = Color(0.113725, 0.113725, 0.113725, 0.415686)
+border_width_top = 10
 border_width_bottom = 2
-border_color = Color(0.79105, 0.385609, 0.757333, 1)
+border_color = Color(0.79, 0.3871, 0.756425, 0)
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
@@ -55,6 +56,7 @@ Label/fonts/font = ExtResource("1_hjsdv")
 LineEdit/fonts/font = ExtResource("1_hjsdv")
 LineEdit/styles/focus = SubResource("StyleBoxFlat_hjsdv")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_1u5n6")
+RichTextLabel/constants/line_separation = -2
 RichTextLabel/fonts/normal_font = ExtResource("1_hjsdv")
 UIButton/base_type = &"Button"
 UIButton/fonts/font = ExtResource("2_1u5n6")

@@ -10,10 +10,11 @@ config_version=5
 
 [application]
 
-config/name="LOWREZJAM 2025"
+config/name="Liber Liberationis"
 run/main_scene="uid://dsb7icsbl7uqh"
 config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://c27fa7ao3m1ye"
+config/windows_native_icon="res://style/icon/icon.ico"
 
 [autoload]
 

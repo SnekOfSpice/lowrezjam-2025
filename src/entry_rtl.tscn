@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dbgcvbo2gm04y"]
 
 [node name="CurrentDayEntryLabel" type="RichTextLabel"]
+clip_contents = false
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2

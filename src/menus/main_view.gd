@@ -78,7 +78,7 @@ func update():
 	%AnniversaryButton.visible = anniversary_count > 1
 	#%AnniversaryButton.text = "(%s)" % anniversary_count
 	
-	%CurrentDayEntryLabel.text = Data.get_entry(get_todays_datetime(), nav_offset) + "\n "
+	%CurrentDayEntryLabel.text = Data.get_entry(get_todays_datetime(), nav_offset)
 	
 	if %AnniversaryContainer.visible:
 		display_anniversaries()
@@ -126,6 +126,7 @@ func set_entry_state(state:EntryStage):
 			%PromptLabel.text = str("It is\n", get_offset_datetime())
 		EntryStage.LiberateFrom:
 			%LineEdit.call_deferred("grab_focus")
+			%LineEdit.placeholder_text = "fascism"
 			current_entry = %PromptLabel.text
 			current_entry = current_entry.replace("\n", " ")
 			#current_entry = ensure_text_ends_with(current_entry, " ")
@@ -135,6 +136,7 @@ func set_entry_state(state:EntryStage):
 			%PromptLabel.text = "Today I took a step towards liberation from"
 		EntryStage.LiberateWith:
 			%LineEdit.call_deferred("grab_focus")
+			%LineEdit.placeholder_text = "proud of u"
 			current_entry = ensure_text_ends_with(current_entry, " ")
 			current_entry += %PromptLabel.text
 			current_entry = ensure_text_ends_with(current_entry, " ")
@@ -152,7 +154,7 @@ func request_go_to_prev():
 	if debounce > 0:
 		return
 	if not Data.has_entry(get_todays_datetime(), nav_offset - 1):
-		print("cannot go to prev")
+		shake(-1)
 		return
 	debounce = DEBOUNCE_DURATION
 	nav_offset -= 1
@@ -162,7 +164,7 @@ func request_go_to_next():
 	if debounce > 0:
 		return
 	if not Data.has_entry(get_todays_datetime(), nav_offset + 1):
-		print("cannot go to next")
+		shake(1)
 		return
 	debounce = DEBOUNCE_DURATION
 	nav_offset += 1
@@ -179,8 +181,12 @@ func go_to_next_entry_state():
 		EntryStage.Date:
 			set_entry_state(EntryStage.LiberateFrom)
 		EntryStage.LiberateFrom:
+			if %LineEdit.text.is_empty():
+				return
 			set_entry_state(EntryStage.LiberateWith)
 		EntryStage.LiberateWith:
+			if %LineEdit.text.is_empty():
+				return
 			current_entry += %PromptLabel.text
 			current_entry = ensure_text_ends_with(current_entry, " ")
 			current_entry += %LineEdit.text
@@ -192,46 +198,39 @@ func go_to_next_entry_state():
 var touch_last_frame := false
 var touch_last_position : Vector2
 var input_request_callable:Callable
+var is_drag : bool
 func _on_cover_gui_input(event: InputEvent) -> void:
 	if event is InputEventScreenDrag:
+		is_drag = true
 		$Label.text = event.screen_relative
 		%CurrentDayEntryLabel.get_v_scroll_bar().value += event.screen_relative.y
 		%AnniversaryScrollContainer.get_v_scroll_bar().value += event.screen_relative.y
 	elif event is InputEventScreenTouch:
+		
 		if %AnniversaryContainer.visible:
 			return
-		#if touch_last_frame:
-			#%CurrentDayEntryLabel.get_v_scroll_bar().value += touch_last_position.y - event.position.y
-			#%AnniversaryScrollContainer.get_v_scroll_bar().value += touch_last_position.y - event.position.y
-		#else:
 		if event.position.x <= 31:
 			request_go_to_prev()
 		if event.position.x >= 32:
 			request_go_to_next()
-		
-		#if event.is_released():
-			#touch_last_frame = false
-		#else:
-			#touch_last_frame = true
-			#touch_last_position = event.position
+		if event.is_released():
+			set_deferred("is_drag", false)
 	elif event is InputEventMouseButton:
 		if %AnniversaryContainer.visible:
 			return
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-				#if event.is_echo():
-					#input_request_callable = Callable()
-				#else:
 			if event.position.x <= 31:
 				request_go_to_prev()
 			if event.position.x >= 32:
 				request_go_to_next()
-			#else:
-				#input_request_callable = Callable()
 
 var debounce := 0.0
 
 var callable_next_frame:Callable
 func _process(delta: float) -> void:
+	if is_drag and shake_tween:
+		shake_tween.kill()
+	#$Label.text = str(is_drag)
 	if debounce > 0:
 		debounce -= delta
 		
@@ -283,3 +282,16 @@ func _on_close_anniversary_button_button_up() -> void:
 
 func _on_line_edit_text_submitted(_new_text: String) -> void:
 	go_to_next_entry_state()
+
+var shake_tween
+func shake(direction:int):
+	if is_drag:
+		return
+	if shake_tween:
+		shake_tween.kill()
+	shake_tween = create_tween()
+	for i in 2:
+		shake_tween.tween_property(%Content, "position:x", direction * randf_range(1, 4), 0.125)
+		shake_tween.set_ease(Tween.EASE_OUT_IN)
+		#shake_tween.set_trans(Tween.TRANS_BOUNCE)
+	shake_tween.tween_property(%Content, "position", Vector2.ZERO, 0.01)

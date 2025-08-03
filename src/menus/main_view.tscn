@@ -66,7 +66,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="Content" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Content"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -75,15 +84,17 @@ grow_horizontal = 2
 grow_vertical = 2
 vertical_scroll_mode = 3
 
-[node name="EntryContainer" type="MarginContainer" parent="ScrollContainer"]
+[node name="EntryContainer" type="MarginContainer" parent="Content/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/EntryContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/ScrollContainer/EntryContainer"]
 layout_mode = 2
+theme_override_constants/separation = -8
 
-[node name="PromptLabel" type="RichTextLabel" parent="ScrollContainer/EntryContainer/VBoxContainer"]
+[node name="PromptLabel" type="RichTextLabel" parent="Content/ScrollContainer/EntryContainer/VBoxContainer"]
 unique_name_in_owner = true
+clip_contents = false
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
 text = "2024-07-12
@@ -92,35 +103,48 @@ dfg
 dfg
 dfg"
 fit_content = true
-autowrap_mode = 1
 horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/EntryContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Content/ScrollContainer/EntryContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_right = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EntryContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/ScrollContainer/EntryContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_constants/separation = 1
 
-[node name="LineEdit" type="LineEdit" parent="ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("scroll_container")]
+[node name="MarginContainer" type="MarginContainer" parent="Content/ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="Content/ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer" node_paths=PackedStringArray("scroll_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+keep_editing_on_text_submit = true
+caret_blink = true
 script = ExtResource("6_k2gfu")
-scroll_container = NodePath("../../../../..")
+scroll_container = NodePath("../../../../../..")
 
-[node name="NextEntryStageButton" type="Button" parent="ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="MarginContainer2" type="Control" parent="Content/ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(9, 0)
+layout_mode = 2
+
+[node name="NextEntryStageButton" type="Button" parent="Content/ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
+offset_top = 3.0
+offset_right = 11.0
+offset_bottom = 26.0
 size_flags_horizontal = 8
-size_flags_vertical = 8
+size_flags_vertical = 4
 focus_mode = 0
 theme_type_variation = &"UIButton"
 text = ">"
 
-[node name="CurrentDayContainer" type="MarginContainer" parent="."]
+[node name="CurrentDayContainer" type="MarginContainer" parent="Content"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -131,12 +155,12 @@ grow_vertical = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="CurrentDayEntryLabel" parent="CurrentDayContainer" instance=ExtResource("4_d6kii")]
+[node name="CurrentDayEntryLabel" parent="Content/CurrentDayContainer" instance=ExtResource("4_d6kii")]
 unique_name_in_owner = true
 layout_mode = 2
 fit_content = false
 
-[node name="Praise" type="ColorRect" parent="."]
+[node name="Praise" type="ColorRect" parent="Content"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -147,7 +171,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="PraiseLabel" type="Label" parent="Praise"]
+[node name="PraiseLabel" type="Label" parent="Content/Praise"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -164,7 +188,7 @@ vertical_alignment = 1
 autowrap_mode = 3
 uppercase = true
 
-[node name="AnniversaryButton" type="Button" parent="."]
+[node name="AnniversaryButton" type="Button" parent="Content"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 3
@@ -184,7 +208,7 @@ focus_mode = 0
 theme_type_variation = &"UIButton"
 text = "a"
 
-[node name="TodayButton" type="Button" parent="."]
+[node name="TodayButton" type="Button" parent="Content"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 2
@@ -201,7 +225,7 @@ focus_mode = 0
 theme_type_variation = &"UIButton"
 text = "t"
 
-[node name="AnniversaryContainer" type="Control" parent="."]
+[node name="AnniversaryContainer" type="Control" parent="Content"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -210,7 +234,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="AnniversaryContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Content/AnniversaryContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -219,39 +243,39 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="AnniversaryContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/AnniversaryContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="ColorRect" type="PanelContainer" parent="AnniversaryContainer/MarginContainer/VBoxContainer"]
+[node name="ColorRect" type="PanelContainer" parent="Content/AnniversaryContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_d6kii")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AnniversaryContainer/MarginContainer/VBoxContainer/ColorRect"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/AnniversaryContainer/MarginContainer/VBoxContainer/ColorRect"]
 layout_mode = 2
 size_flags_vertical = 4
 alignment = 1
 
-[node name="AnniversaryLabel" type="Label" parent="AnniversaryContainer/MarginContainer/VBoxContainer/ColorRect/HBoxContainer"]
+[node name="AnniversaryLabel" type="Label" parent="Content/AnniversaryContainer/MarginContainer/VBoxContainer/ColorRect/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "= 07-02 ="
 horizontal_alignment = 1
 
-[node name="AnniversaryScrollContainer" type="ScrollContainer" parent="AnniversaryContainer/MarginContainer/VBoxContainer"]
+[node name="AnniversaryScrollContainer" type="ScrollContainer" parent="Content/AnniversaryContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 0
 horizontal_scroll_mode = 0
 
-[node name="AnniversaryEntries" type="VBoxContainer" parent="AnniversaryContainer/MarginContainer/VBoxContainer/AnniversaryScrollContainer"]
+[node name="AnniversaryEntries" type="VBoxContainer" parent="Content/AnniversaryContainer/MarginContainer/VBoxContainer/AnniversaryScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="CloseAnniversaryButton" type="Button" parent="AnniversaryContainer"]
+[node name="CloseAnniversaryButton" type="Button" parent="Content/AnniversaryContainer"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -265,11 +289,11 @@ focus_mode = 0
 theme_type_variation = &"UIButton"
 text = "X"
 
-[connection signal="text_submitted" from="ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
-[connection signal="button_up" from="ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer/NextEntryStageButton" to="." method="go_to_next_entry_state"]
-[connection signal="gui_input" from="CurrentDayContainer/CurrentDayEntryLabel" to="." method="_on_cover_gui_input"]
-[connection signal="button_up" from="AnniversaryButton" to="." method="_on_anniversary_button_button_up"]
-[connection signal="pressed" from="TodayButton" to="." method="_on_today_button_pressed"]
-[connection signal="gui_input" from="AnniversaryContainer" to="." method="_on_cover_gui_input"]
-[connection signal="gui_input" from="AnniversaryContainer/MarginContainer/VBoxContainer/AnniversaryScrollContainer" to="." method="_on_cover_gui_input"]
-[connection signal="button_up" from="AnniversaryContainer/CloseAnniversaryButton" to="." method="_on_close_anniversary_button_button_up"]
+[connection signal="text_submitted" from="Content/ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="button_up" from="Content/ScrollContainer/EntryContainer/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer2/NextEntryStageButton" to="." method="go_to_next_entry_state"]
+[connection signal="gui_input" from="Content/CurrentDayContainer/CurrentDayEntryLabel" to="." method="_on_cover_gui_input"]
+[connection signal="button_up" from="Content/AnniversaryButton" to="." method="_on_anniversary_button_button_up"]
+[connection signal="pressed" from="Content/TodayButton" to="." method="_on_today_button_pressed"]
+[connection signal="gui_input" from="Content/AnniversaryContainer" to="." method="_on_cover_gui_input"]
+[connection signal="gui_input" from="Content/AnniversaryContainer/MarginContainer/VBoxContainer/AnniversaryScrollContainer" to="." method="_on_cover_gui_input"]
+[connection signal="button_up" from="Content/AnniversaryContainer/CloseAnniversaryButton" to="." method="_on_close_anniversary_button_button_up"]
