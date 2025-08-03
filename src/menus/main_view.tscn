@@ -1,10 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://dsb7icsbl7uqh"]
+[gd_scene load_steps=7 format=3 uid="uid://dsb7icsbl7uqh"]
 
 [ext_resource type="Texture2D" uid="uid://bcyrr5nu8cnme" path="res://icon.svg" id="1_2qcmc"]
 [ext_resource type="Theme" uid="uid://yfwwtihxqnf6" path="res://style/liberate.tres" id="1_cciet"]
 [ext_resource type="Script" uid="uid://rxnvr74bvrmm" path="res://src/menus/main_view.gd" id="2_eld1n"]
+[ext_resource type="FontFile" uid="uid://bnbdd4ttjytsw" path="res://style/fonts/Born2bSportyV2.ttf" id="4_dkq5f"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eld1n"]
+
+[sub_resource type="FontVariation" id="FontVariation_d6kii"]
+base_font = ExtResource("4_dkq5f")
+spacing_top = -2
 
 [node name="MainView" type="Control"]
 layout_mode = 3
@@ -47,12 +52,14 @@ theme_override_constants/separation = 0
 
 [node name="PrevButton" type="Button" parent="ControlsContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 8
+focus_mode = 0
 text = "<"
 
 [node name="NextButton" type="Button" parent="ControlsContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 8
+focus_mode = 0
 text = ">"
 
 [node name="TodayButton" type="Button" parent="ControlsContainer"]
@@ -64,8 +71,9 @@ anchor_bottom = 1.0
 offset_top = -23.0
 offset_right = 9.0
 grow_vertical = 0
-size_flags_horizontal = 0
+size_flags_horizontal = 8
 size_flags_vertical = 10
+focus_mode = 0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eld1n")
 text = "x"
 
@@ -81,8 +89,9 @@ offset_left = -9.0
 offset_top = -23.0
 grow_horizontal = 0
 grow_vertical = 0
-size_flags_horizontal = 0
+size_flags_horizontal = 8
 size_flags_vertical = 10
+focus_mode = 0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eld1n")
 text = "y"
 
@@ -165,9 +174,39 @@ size_flags_horizontal = 3
 [node name="NextEntryStageButton" type="Button" parent="EntryContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 8
 size_flags_vertical = 8
+focus_mode = 0
 text = ">"
+
+[node name="Praise" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="PraiseLabel" type="Label" parent="Praise"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.997773, 0.271193, 0.793478, 1)
+theme_override_constants/line_spacing = -4
+theme_override_fonts/font = SubResource("FontVariation_d6kii")
+text = "i am prepared should they force my hand"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+uppercase = true
 
 [connection signal="pressed" from="ControlsContainer/TodayButton" to="." method="_on_today_button_pressed"]
 [connection signal="gui_input" from="MarginContainer/ScrollContainer/CurrentDayEntryLabel" to="." method="_on_current_day_entry_label_gui_input"]
-[connection signal="pressed" from="EntryContainer/VBoxContainer/MarginContainer/HBoxContainer/NextEntryStageButton" to="." method="_on_next_entry_stage_button_pressed"]
+[connection signal="button_up" from="EntryContainer/VBoxContainer/MarginContainer/HBoxContainer/NextEntryStageButton" to="." method="_on_next_entry_stage_button_button_up"]

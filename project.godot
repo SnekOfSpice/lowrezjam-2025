@@ -24,6 +24,7 @@ Data="*res://autoload/data.tscn"
 window/size/viewport_width=64
 window/size/viewport_height=64
 window/stretch/mode="viewport"
+window/handheld/orientation=1
 
 [input]
 
@@ -48,3 +49,4 @@ ui_right={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

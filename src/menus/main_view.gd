@@ -6,13 +6,39 @@ enum EntryStage {
 	LiberateWith
 }
 
+const AFFIRMATIONS := [
+	"by any means",
+	"more of us than them",
+	"i am prepared should they force my hand",
+	"good pup",
+	"set the world ablaze",
+	"nothing goes to waste",
+	"My heart is a weapon",
+	"I’ll die to fight this way",
+	"No going back",
+	"Self determined",
+	"Put your life back in your hands",
+	"Who dares wins",
+	"For the cause live and die",
+	"A world to win",
+	"Nothing goes to waste",
+]
+
 var entry_stage : EntryStage
 var nav_offset := 0
 var current_entry := ""
 
 func _ready() -> void:
+	%Praise.visible = false
 	nav_offset = 0
 	update()
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
+
+func affirm():
+	%Praise.visible = true
+	%PraiseLabel.text = AFFIRMATIONS.pick_random()
+	var t = get_tree().create_timer(5)
+	t.timeout.connect(%Praise.hide)
 
 ## returns todays datetime but with the T portion trimmed
 func get_todays_datetime() -> String:
@@ -32,7 +58,7 @@ func update():
 	%TodayButton.visible = not is_today
 	%AnniversaryButton.visible = not Data.get_anniversaries(datetime).size() > 1
 	
-	%CurrentDayEntryLabel.text = Data.get_entry(get_todays_datetime(), nav_offset)
+	%CurrentDayEntryLabel.text = Data.get_entry(get_todays_datetime(), nav_offset) + "\n "
 	
 	if is_today:
 		var has_entry := Data.has_entry(datetime)
@@ -51,19 +77,27 @@ func set_entry_state(state:EntryStage):
 			current_entry = ""
 			%PromptLabel.text = str("It is\n", get_offset_datetime())
 		EntryStage.LiberateFrom:
-			var text : String = %PromptLabel.text
-			text = ensure_text_ends_with(text, " ")
-			text += %LineEdit.text
-			text = ensure_text_ends_with(text, ".")
-			current_entry += text + " "
+			%LineEdit.grab_focus()
+			current_entry = %PromptLabel.text
+			current_entry = current_entry.replace("\n", " ")
+			#current_entry = ensure_text_ends_with(current_entry, " ")
+			#current_entry += %LineEdit.text
+			current_entry = ensure_text_ends_with(current_entry, ".")
+			#current_entry += text + " "
 			%PromptLabel.text = "Today I took a step towards liberation from"
 		EntryStage.LiberateWith:
-			var text : String = %PromptLabel.text
-			text = ensure_text_ends_with(text, ".")
-			current_entry += text + " "
+			%LineEdit.grab_focus()
+			current_entry = ensure_text_ends_with(current_entry, " ")
+			current_entry += %PromptLabel.text
+			current_entry = ensure_text_ends_with(current_entry, " ")
+			current_entry += %LineEdit.text
+			current_entry = ensure_text_ends_with(current_entry, ".")
+			current_entry = ensure_text_ends_with(current_entry, " ")
+			#current_entry += text + " "
 			%PromptLabel.text = "I did this by"
 			
 	entry_stage = state
+	%LineEdit.text = ""
 
 func request_go_to_prev():
 	if not Data.has_entry(get_todays_datetime(), nav_offset - 1):
@@ -84,19 +118,20 @@ func _on_today_button_pressed() -> void:
 	update()
 
 
-
-func _on_next_entry_stage_button_pressed() -> void:
+func _on_next_entry_stage_button_button_up() -> void:
 	match entry_stage:
 		EntryStage.Date:
 			set_entry_state(EntryStage.LiberateFrom)
 		EntryStage.LiberateFrom:
 			set_entry_state(EntryStage.LiberateWith)
 		EntryStage.LiberateWith:
+			current_entry += %PromptLabel.text
 			current_entry = ensure_text_ends_with(current_entry, " ")
 			current_entry += %LineEdit.text
 			current_entry = ensure_text_ends_with(current_entry, ".")
 			Data.save_entry(get_offset_datetime(), current_entry)
 			update()
+			affirm()
 
 var input_request_callable:Callable
 func _on_current_day_entry_label_gui_input(event: InputEvent) -> void:

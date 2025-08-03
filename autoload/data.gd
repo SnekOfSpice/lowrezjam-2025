@@ -1,6 +1,24 @@
 extends Node
 
-var entries := {}
+var entries := {
+	"2024" : {
+		"01" : {
+			"03" : "2024-01-03 its earlier januaray uwuwu",
+			"04" : "2024-01-04 its earlier januaray again uwuwu",
+		}
+	},
+	"2025" : {
+		"01" : {
+			"03" : "2025-01-03 its januaray uwuwu",
+			"04" : "2025-01-04 its januaray again uwuwu",
+		},
+		"08" : {
+			"02" : "2025-08-02 its yesterday",
+			"03" : "2025-08-03 its today",
+			"04" : "2025-08-04 its tpmorrow",
+		}
+	}
+}
 
 const DAY_COUNT_BY_MONTH := {
 	 1: 31,
@@ -17,20 +35,13 @@ const DAY_COUNT_BY_MONTH := {
 	12: 31,
 }
 
-func _ready() -> void:
-	var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
-	if not file:
-		return
-	entries = JSON.parse_string(file.get_as_text())
-	file.close()
-
 #func _ready() -> void:
-	#for month in range (1, 13):
-		#var days := {}
-		#for day_count in DAY_COUNT_BY_MONTH.get(month):
-			## saved by year but this is init so nothing
-			#days[day_count] = {}
-		#entries[month] = days
+	#var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
+	#if not file:
+		#return
+	#entries = JSON.parse_string(file.get_as_text())
+	#file.close()
+
 
 func get_all_entry_datetimes() -> Array:
 	var datetimes := []
